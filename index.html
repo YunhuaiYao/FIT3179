@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Average Temperatures and CO2 Emissions 1990-2013</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <style>
+        .map-container {
+            width: 600px;
+            height: 400px;
+            background-image: url('map.vg.png'); /* Placeholder image */
+            background-size: cover; /* Ensure the image covers the div */
+            background-position: center; /* Center the background image */
+            border: 1px solid #ffffff; /* White border for visibility */
+            margin-bottom: 20px; /* Space between the maps */
+        }
+        h2 {
+            text-align: center;
+        }
+        h3 {
+            text-align: center;
+            color: #666; /* Subtitle text color */
+            font-size: 16px; /* Subtitle font size */
+        }
+    </style>
+</head>
+<body>
+    <h2>Global Average Temperatures and CO2 Emissions 1990-2013</h2>
+    
+    <div id="CO2Map" class="map-container"></div>
+    <h3>Global CO2 Emissions 1990-2013</h3> 
+    
+    <div id="AuMap" class="map-container"></div>
+    <h3>Australian Average Annual Temperatures by States</h3>
+
+    <script>
+        // Fetch and embed the CO2 Emissions Map
+        fetch('map.vg.json')
+        .then(response => response.json())
+        .then(spec => vegaEmbed('#CO2Map', spec))
+        .catch(error => console.error('Error loading CO2 Emissions Map:', error));
+
+        // Fetch and embed the Australian Average Temperature Map
+        fetch('AuAvgTemp.vg.json')
+        .then(response => response.json())
+        .then(spec => vegaEmbed('#AuMap', spec))
+        .catch(error => console.error('Error loading Australian Average Temperature Map:', error));
+    </script>
+</body>
+</html>
