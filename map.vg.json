@@ -1,0 +1,112 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Interactive visualization of global CO2 emissions in 2018 and historical emissions for selected countries",
+  "vconcat": [
+    {
+      "width": 600,
+      "height": 400,
+      "data": {
+        "url": "./ne_110m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "ne_110m_admin_0_countries"
+        }
+      },
+      "transform": [
+        {
+          "lookup": "properties.SOVEREIGNT",
+          "from": {
+            "data": {
+              "url": "historical_emissions.csv",
+              "format": {
+                "type": "csv"
+              }
+            },
+            "key": "Country",
+            "fields": ["2018"]
+          }
+        }
+      ],
+      "projection": {
+        "type": "equirectangular"
+      },
+      "mark": "geoshape",
+      "encoding": {
+        "color": {
+          "field": "2018",
+          "type": "quantitative",
+          "scale": {
+            "scheme": "reds"
+          },
+          "title": "CO2 Emissions (tons)"
+        },
+        "tooltip": [
+          {
+            "field": "properties.SOVEREIGNT",
+            "type": "nominal",
+            "title": "Country"
+          },
+          {
+            "field": "2018",
+            "type": "quantitative",
+            "title": "CO2 Emissions (tons)"
+          }
+        ]
+      },
+      "selection": {
+        "countrySelect": {
+          "type": "single",
+          "fields": ["properties.SOVEREIGNT"],
+          "bind": "legend"
+        }
+      }
+    },
+    {
+      "width": 600,
+      "height": 200,
+      "data": {
+        "url": "historical_emissions.csv",
+        "format": {
+          "type": "csv"
+        }
+      },
+      "transform": [
+        {
+          "filter": {
+            "param": "countrySelect",
+            "empty": false,
+            "expr": "datum.Country === countrySelect.properties.SOVEREIGNT"
+          },
+          "fold": [
+            "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999",
+            "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009",
+            "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"
+          ],
+          "as": ["Year", "Emissions"]
+        }
+      ],
+      "mark": "line",
+      "encoding": {
+        "x": {
+          "field": "Year",
+          "type": "ordinal",
+          "title": "Year"
+        },
+        "y": {
+          "field": "Emissions",
+          "type": "quantitative",
+          "title": "CO2 Emissions (tons)"
+        },
+        "color": {
+          "condition": {
+            "param": "countrySelect",
+            "field": "Country",
+            "type": "nominal",
+            "legend": null
+          },
+          "value": "reds"
+        }
+      }
+    }
+  ]
+}
