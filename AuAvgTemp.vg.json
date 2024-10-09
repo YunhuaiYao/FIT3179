@@ -1,0 +1,39 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Overlapping Maps of Australia showing country and state boundaries",
+  "width": 600,
+  "height": 400,
+  "layer": [
+    {
+      "data": {
+        "url": "./ne_50mAu_admin_0_countries.json",
+        "format": {
+          "type": "topojson",
+          "feature": "ne_50mAu_admin_0_countries"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#ffffff",
+        "stroke": "black"
+      }
+    },
+    {
+      "data": {
+        "url": "./ne_50mAu_admin_1_states_provinces.json",
+        "format": {
+          "type": "topojson",
+          "feature": "ne_50mAu_admin_1_states_provinces"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "transparent",
+        "stroke": "#ffffff"
+      }
+    }
+  ],
+  "projection": {
+    "type": "equirectangular"
+  }
+}
