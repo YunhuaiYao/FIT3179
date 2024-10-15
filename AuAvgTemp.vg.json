@@ -1,39 +1,185 @@
-{
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Overlapping Maps of Australia showing country and state boundaries",
-  "width": 600,
-  "height": 400,
-  "layer": [
-    {
-      "data": {
-        "url": "./ne_50mAu_admin_0_countries.json",
-        "format": {
-          "type": "topojson",
-          "feature": "ne_50mAu_admin_0_countries"
+  {
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "params": [
+      {
+        "name": "Year_selection",
+        "value": 2012,
+        "bind": {
+          "input": "range",
+          "min": 1990,
+          "max": 2012,
+          "step": 1,
+          "name": "Year Selection for the map: "
+        }
+      }
+    ],
+    "hconcat": [
+      {
+        "title": "Australia Average Temperature 1990-2012",
+        "width": 600,
+        "height": 600,
+        "data": {
+          "url": "ne_50mAu_admin_1_states_provinces.json",
+          "format": {
+            "type": "topojson",
+            "feature": "ne_50mAu_admin_1_states_provinces"
+          }
+        },
+        "transform": [
+          {
+            "lookup": "properties.name_en",
+            "from": {
+              "data": {
+                "url": "annual_avg_temps_wide.csv",
+                "format": {
+                  "type": "csv"
+                }
+              },
+              "key": "State",
+              "fields": [
+                "1990",
+                "1991",
+                "1992",
+                "1993",
+                "1994",
+                "1995",
+                "1996",
+                "1997",
+                "1998",
+                "1999",
+                "2000",
+                "2001",
+                "2002",
+                "2003",
+                "2004",
+                "2005",
+                "2006",
+                "2007",
+                "2008",
+                "2009",
+                "2010",
+                "2011",
+                "2012"
+              ]
+            }
+          },
+          {
+            "calculate": "datum[Year_selection]",
+            "as": "AverageTemperature"
+          }
+        ],
+        "projection": {
+          "type": "equirectangular"
+        },
+        "mark": {
+          "type": "geoshape",
+          "stroke": "#ffffff"
+        },
+        "encoding": {
+          "color": {
+            "field": "AverageTemperature",
+            "type": "quantitative",
+            "scale": {
+              "domain": [
+                10,
+                30
+              ],
+              "scheme": "reds"
+            },
+            "title": "Average Temperature (°C)"
+          },
+          "tooltip": [
+            {
+              "field": "properties.name_en",
+              "type": "nominal",
+              "title": "State"
+            },
+            {
+              "field": "AverageTemperature",
+              "type": "quantitative",
+              "title": "Average Temp (°C)"
+            }
+          ]
         }
       },
-      "mark": {
-        "type": "geoshape",
-        "fill": "#ffffff",
-        "stroke": "black"
-      }
-    },
-    {
-      "data": {
-        "url": "./ne_50mAu_admin_1_states_provinces.json",
-        "format": {
-          "type": "topojson",
-          "feature": "ne_50mAu_admin_1_states_provinces"
+      {
+        "title": "Average of Average Temperature by State 1990-2012",
+        "data": {
+          "url": "annual_avg_temps_wide.csv",
+          "format": {
+            "type": "csv"
+          }
+        },
+        "transform": [
+          {
+            "fold": [
+              "1990",
+              "1991",
+              "1992",
+              "1993",
+              "1994",
+              "1995",
+              "1996",
+              "1997",
+              "1998",
+              "1999",
+              "2000",
+              "2001",
+              "2002",
+              "2003",
+              "2004",
+              "2005",
+              "2006",
+              "2007",
+              "2008",
+              "2009",
+              "2010",
+              "2011",
+              "2012"
+            ],
+            "as": [
+              "Year",
+              "Temperature"
+            ]
+          },
+          {
+            "aggregate": [
+              {
+                "op": "mean",
+                "field": "Temperature",
+                "as": "AverageTemperature"
+              }
+            ],
+            "groupby": [
+              "State"
+            ]
+          }
+        ],
+        "mark": "bar",
+        "encoding": {
+          "x": {
+            "field": "AverageTemperature",
+            "type": "quantitative",
+            "title": "Average Temperature (°C)"
+          },
+          "y": {
+            "field": "State",
+            "type": "nominal",
+            "sort": "-x"
+          },
+          "tooltip": [
+            {
+              "field": "State",
+              "type": "nominal",
+              "title": "State"
+            },
+            {
+              "field": "AverageTemperature",
+              "type": "quantitative",
+              "title": "Average Temperature (°C)"
+            }
+          ]
         }
-      },
-      "mark": {
-        "type": "geoshape",
-        "fill": "transparent",
-        "stroke": "#ffffff"
       }
-    }
-  ],
-  "projection": {
-    "type": "equirectangular"
+    ]
   }
-}

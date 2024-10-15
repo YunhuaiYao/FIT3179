@@ -8,33 +8,70 @@
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
     <style>
+        body {
+            background-color: #000000;
+            color: #f0f0f0; 
+            font-family: Arial, sans-serif;
+        }
+
+        .section {
+            background-color: #444444; 
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+        }
+
         .map-container {
             width: 600px;
             height: 400px;
-            background-image: url('map.vg.png'); /* Placeholder image */
-            background-size: cover; /* Ensure the image covers the div */
-            background-position: center; /* Center the background image */
-            border: 1px solid #ffffff; /* White border for visibility */
-            margin-bottom: 20px; /* Space between the maps */
+            background-image: url('map.vg.png');
+            background-size: cover;
+            background-position: center; 
+            border: 1px solid #515050;
+            margin-bottom: 20px; /* Space between the sections */
         }
-        h2 {
+
+        h2, h3 {
             text-align: center;
+            color: #ffffff; 
         }
+
         h3 {
-            text-align: center;
-            color: #666; /* Subtitle text color */
-            font-size: 16px; /* Subtitle font size */
+            font-size: 18px;
+        }
+
+        h4 {
+            color: #f0f0f0;
+            font-size: 14px;
+        }
+
+        h4 .red {
+            color: #fc3939; /* Red for highlight */
+        }
+
+        .map-container {
+            background-color: #333333;
         }
     </style>
 </head>
 <body>
-    <h2>Global Average Temperatures and CO2 Emissions 1990-2013</h2>
-    
-    <div id="CO2Map" class="map-container"></div>
-    <h3>Global CO2 Emissions 1990-2013</h3> 
-    
-    <div id="AuMap" class="map-container"></div>
-    <h3>Australian Average Annual Temperatures by States</h3>
+    <div class="section">
+        <h2>Global Average Temperatures and CO2 Emissions 1990s-2010s</h2>
+        <h4>This visualization compares two important environmental datasets: global CO2 emissions and average temperatures in <span class="red">Australia</span> from 1990s to 2010s. Features multiple interactive elements to explore trends in both emissions and temperatures:</h4>
+    </div>
+
+    <div class="section">
+        <h3>Global CO2 Emissions 1990-2018</h3> 
+        <div id="CO2Map" class="map-container"></div>
+        <h4>Notice that there is a significant rise in CO2 emissions from <span class="red">China</span> and <span class="red">India</span>, while the <span class="red">U.S.</span> remains stable with a slight decline, and countries like <span class="red">Germany</span>, <span class="red">Japan</span>, and <span class="red">Brazil</span> maintain lower or declining emission levels from 1990 to 2018.</h4>
+    </div>
+
+    <div class="section">
+        <h3>Australian Average Annual Temperatures by States</h3>
+        <div id="AuMap" class="map-container"></div>
+        <h4>The average temperatures across various <span class="red">Australian</span> states from 1990 to 2012. The <span class="red">Northern Territory</span> consistently has the highest average temperatures, followed by <span class="red">Queensland</span> and <span class="red">Western Australia</span>, which also exhibit relatively high temperatures. In contrast, <span class="red">Tasmania</span> shows significantly lower temperatures compared to other regions. As the year changes, the color intensity on the map reflects these temperature variations, with the northern regions remaining consistently warmer. The analysis highlights the geographic temperature distribution, indicating hotter northern areas and cooler southern regions like <span class="red">Victoria</span> and <span class="red">Tasmania</span>.</h4>
+    </div>
 
     <script>
         // Fetch and embed the CO2 Emissions Map
