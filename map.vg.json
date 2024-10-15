@@ -16,8 +16,8 @@
   ],
   "vconcat": [
     {
-      "width": 600,
-      "height": 400,
+      "width": "container",
+      "height": 600,
       "layer": [
         {
           "data": {
@@ -117,8 +117,8 @@
       ]
     },
     {
-      "width": 600,
-      "height": 200,
+      "width": "container",
+      "height": 600,
       "data": {
         "url": "historical_emissions.csv",
         "format": {
